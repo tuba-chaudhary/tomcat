@@ -1,51 +1,22 @@
 pipeline {
     agent any
 
-    tools {
-        jdk 'JDK21'
-        maven 'Maven3'
-    }
-
-    environment {
-        WAR_FILE = "target/hello-tomcat-advanced.war"
-        TOMCAT_URL = "http://localhost:7080"
-        TOMCAT_USER = "tomcatuser"   // replace with your Tomcat username
-        TOMCAT_PASSWORD = "yourpassword"   // replace with your Tomcat password
-    }
-
     stages {
-        stage('Clean') {
+        stage('Build WAR') {
             steps {
-                bat 'mvn clean'
+                bat 'mvn clean package'
             }
         }
 
-        stage('Build') {
+        stage('Deploy to Tomcat') {
             steps {
-                bat 'mvn package'
+                echo 'Deploying WAR file to Tomcat...'
+                bat '''
+                curl -u "tomcatuser:yourpassword" ^
+                --upload-file "target/hello-tomcat-advanced.war" ^
+                "http://localhost:7080/manager/text/deploy?path=/hello-tomcat-advanced&update=true"
+                '''
             }
-        }
-
-        stage('Deploy') {
-            steps {
-                script {
-                    echo 'Deploying WAR file to Tomcat...'
-                    bat """
-                        curl -u "${TOMCAT_USER}:${TOMCAT_PASSWORD}" ^
-                        --upload-file "${WAR_FILE}" ^
-                        "${TOMCAT_URL}/manager/text/deploy?path=/hello-tomcat-advanced&update=true"
-                    """
-                }
-            }
-        }
-    }
-
-    post {
-        success {
-            echo 'Deployment successful!'
-        }
-        failure {
-            echo 'Deployment failed!'
         }
     }
 }
