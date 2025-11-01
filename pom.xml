@@ -1,16 +1,27 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                             http://maven.apache.org/maven-v4_0_0.xsd">
+
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.github.jitpack</groupId>
-    <artifactId>maven-simple</artifactId>
-    <version>0.2-SNAPSHOT</version>
-    <packaging>jar</packaging>
+    <artifactId>hello-tomcat-advanced</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>war</packaging>
 
-    <name>Simple Maven example</name>
-    <url>https://jitpack.io/#jitpack/maven-simple/0.1</url>
+    <name>Hello Tomcat App</name>
 
     <dependencies>
+        <!-- Servlet API for Tomcat -->
+        <dependency>
+            <groupId>jakarta.servlet</groupId>
+            <artifactId>jakarta.servlet-api</artifactId>
+            <version>5.0.0</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- JUnit for testing -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -20,42 +31,27 @@
     </dependencies>
 
     <build>
+        <finalName>hello-tomcat-advanced</finalName>
         <plugins>
-
+            <!-- Compile -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.2</version>
+                <version>3.8.1</version>
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
                 </configuration>
             </plugin>
 
-            <plugin>  <!-- Create sources.jar -->
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-source-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>attach-sources</id>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-
+            <!-- WAR Plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>attach-javadocs</id>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>3.3.2</version>
+                <configuration>
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
+                </configuration>
             </plugin>
         </plugins>
     </build>
