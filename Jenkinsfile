@@ -14,7 +14,7 @@ pipeline {
                 bat '''
                 curl -u "tomcatuser:yourpassword" ^
                 --upload-file "target/hello-tomcat-advanced.war" ^
-                "http://localhost:7080/manager/text/deploy?path=/hello-tomcat-advanced&update=true"
+                "http://localhost:8070/manager/text/deploy?path=/hello-tomcat-advanced&update=true"
                 '''
             }
         }
